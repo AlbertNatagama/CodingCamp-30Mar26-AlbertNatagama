@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Expense & Budget Visualizer</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+
+  <!-- Optional Challenge: Dark/Light Mode Toggle -->
+  <button class="theme-btn" id="themeBtn" title="Toggle Dark/Light Mode">🌙</button>
+
+  <div class="app-title">Expense &amp; Budget Visualizer</div>
+
+  <div class="container">
+
+    <!-- Total Balance -->
+    <div class="balance-card">
+      <div class="balance-label">TOTAL BALANCE</div>
+      <div class="balance-amount" id="totalBalance">$0.00</div>
+    </div>
+
+    <!-- Optional Challenge: Over-Limit Alert Banner -->
+    <div class="limit-banner hidden" id="limitBanner">
+      ⚠️ Warning: You have exceeded your spending limit!
+    </div>
+
+    <!-- Add Transaction Form -->
+    <div class="form-card">
+      <div class="form-title">Add Transaction</div>
+
+      <div class="form-group">
+        <label for="itemName">Item Name</label>
+        <input type="text" id="itemName" />
+      </div>
+
+      <div class="form-group">
+        <label for="amount">Amount</label>
+        <input type="number" id="amount" min="0" step="0.01" />
+      </div>
+
+      <div class="form-group">
+        <label for="category">Category</label>
+        <select id="category">
+          <option value="">-- Select Category --</option>
+          <option value="Food">Food</option>
+          <option value="Transport">Transport</option>
+          <option value="Fun">Fun</option>
+        </select>
+      </div>
+
+      <!-- Optional Challenge: Custom Category -->
+      <div class="form-group">
+        <label>Add Custom Category <span class="optional-tag">Optional</span></label>
+        <div class="inline-row">
+          <input type="text" id="customCatInput" placeholder="e.g. Shopping, Health..." />
+          <button class="btn-outline" id="addCatBtn">+ Add</button>
+        </div>
+      </div>
+
+      <!-- Optional Challenge: Spending Limit -->
+      <div class="form-group">
+        <label>Spending Limit <span class="optional-tag">Optional</span></label>
+        <div class="inline-row">
+          <input type="number" id="limitInput" placeholder="e.g. 100.00" min="0" step="0.01" />
+          <button class="btn-outline" id="setLimitBtn">Set</button>
+        </div>
+        <div class="limit-status" id="limitStatus"></div>
+      </div>
+
+      <button class="btn-add" id="addTransactionBtn">Add Transaction</button>
+    </div>
+
+    <!-- Bottom: Transactions + Chart -->
+    <div class="bottom-card">
+
+      <!-- Transactions Column -->
+      <div class="transactions-col">
+        <div class="tx-header">
+          <div class="section-title">Transactions</div>
+          <!-- Optional Challenge: Sort -->
+          <div class="sort-wrap">
+            <select id="sortSelect">
+              <option value="newest">Newest</option>
+              <option value="oldest">Oldest</option>
+              <option value="amount-high">Amount ↓</option>
+              <option value="amount-low">Amount ↑</option>
+              <option value="category">Category</option>
+            </select>
+          </div>
+        </div>
+        <div id="transactionList">
+          <div class="empty-state">No transactions yet.</div>
+        </div>
+      </div>
+
+      <!-- Chart Column -->
+      <div class="chart-col">
+        <div class="section-title">Spending by Category</div>
+        <div class="chart-wrapper">
+          <canvas id="spendingChart"></canvas>
+          <div class="chart-empty" id="chartEmpty">Add transactions to see chart</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
