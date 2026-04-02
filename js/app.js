@@ -37,6 +37,11 @@ function fmt(amount) {
   return '$' + Number(amount).toFixed(2);
 }
 
+// ===== Utility: Object.values polyfill =====
+function objValues(obj) {
+  return Object.keys(obj).map(function (k) { return obj[k]; });
+}
+
 // ===== Save to LocalStorage =====
 function saveAll() {
   localStorage.setItem('ev_transactions', JSON.stringify(transactions));
@@ -47,7 +52,7 @@ function saveAll() {
 // ============================================================
 // OPTIONAL CHALLENGE: Dark / Light Mode Toggle
 // ============================================================
-function applyTheme() {
+function applyTheme(isInit) {
   if (isDark) {
     document.body.classList.add('dark');
     themeBtn.textContent = '☀️';
@@ -56,13 +61,13 @@ function applyTheme() {
     themeBtn.textContent = '🌙';
   }
   localStorage.setItem('ev_theme', isDark ? 'dark' : 'light');
-  // Rebuild chart so legend colors match theme
-  if (transactions.length > 0) renderChart();
+  // Only rebuild chart after first init is complete
+  if (!isInit && transactions.length > 0) renderChart();
 }
 
 themeBtn.addEventListener('click', function () {
   isDark = !isDark;
-  applyTheme();
+  applyTheme(false);
 });
 
 // ============================================================
@@ -253,14 +258,16 @@ function renderChart() {
   });
 
   var labels = Object.keys(totals);
-  var data   = Object.values(totals);
+  var data   = objValues(totals);
 
   if (labels.length === 0) {
     chartEmptyEl.style.display = 'block';
+    document.getElementById('spendingChart').style.display = 'none';
     if (chart) { chart.destroy(); chart = null; }
     return;
   }
   chartEmptyEl.style.display = 'none';
+  document.getElementById('spendingChart').style.display = 'block';
 
   var colorMap = {
     Food:      '#27ae60',
@@ -320,6 +327,6 @@ function render() {
 }
 
 // ===== Init =====
-applyTheme();
+applyTheme(true);
 buildCategoryOptions();
 render();
